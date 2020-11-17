@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LPEDORAPPSPECDAO">
+	<select id="getLpEdorAppByContNo" parameterClass="java.lang.String"
+		resultClass="com.sinosoft.surrender.db.model.LpEdorApp">
+		
+       select 
+       trim(EDORACCEPTNO) EDORACCEPTNO,  
+       trim(OTHERNO) OTHERNO, 
+       trim(OTHERNOTYPE) OTHERNOTYPE,
+      EDORAPPNAME, 
+      trim(APPTYPE) APPTYPE, 
+      trim(MANAGECOM) MANAGECOM, 
+      CHGPREM, 
+      CHGAMNT, 
+      CHGGETAMNT,
+      GETMONEY, 
+      GETINTEREST, 
+      EDORAPPDATE, 
+      EDORSTATE, 
+      trim(BANKCODE) BANKCODE, 
+      BANKACCNO, 
+      ACCNAME,
+      POSTALADDRESS, 
+      trim(ZIPCODE) ZIPCODE, 
+      PHONE, 
+      PRINTFLAG, 
+      APPGRADE, 
+      UWSTATE, 
+      UWGRADE,
+      UWOPERATOR, 
+      UWDATE, 
+      trim(UWTIME) UWTIME, 
+      CONFOPERATOR, 
+      CONFDATE, 
+      CONFTIME, 
+      OPERATOR,
+      MAKEDATE,
+      MAKETIME, 
+      MODIFYDATE, 
+      MODIFYTIME, 
+      REASON, 
+      trim(REASONCODE) REASONCODE, 
+      APPROVEGRADE,
+      APPROVESTATE, 
+      APPROVEOPERATOR, 
+      APPROVEDATE, 
+      trim(APPROVETIME) APPROVETIME, 
+      trim(EDORPRTNO)
+      EDORPRTNO, 
+      trim(INSTANCY) INSTANCY, 
+      trim(PAYMODE) PAYMODE, 
+      trim(AGENTCODE) AGENTCODE,
+      AGENTNAME, 
+      trim(AGENTGROUP) AGENTGROUP, 
+      trim(IDTYPE) IDTYPE, 
+      trim(IDNO) IDNO,
+      trim(CENTRALFLAG) CENTRALFLAG, 
+      CENTRALOPERATOR, 
+      TFBUSSNO, 
+      trim(TRYFLAG) TRYFLAG, 
+      trim(SPEFLAG)
+      SPEFLAG, DISOPERATOR, trim(ACCTYPE) ACCTYPE, trim(ACCOUNTNO) ACCOUNTNO, trim(ISSENDMESSAGE)
+      ISSENDMESSAGE, trim(EDORAPPTIME) EDORAPPTIME, CUSAPPEDORDATE, trim(GMACEPTTIME) GMACEPTTIME,
+      GMACEPTDATE, APPCUSNAME, trim(APPCUSNO) APPCUSNO, trim(APPCOMFIRMTIME) APPCOMFIRMTIME,
+      APPCOMFIRMDATE, trim(CHECKSUBMITTIME) CHECKSUBMITTIME, CHECKSUBMITDATE, trim(ACTCONFTIME)
+      ACTCONFTIME, ACTCONFDATE, CUSAPPEDORTIME, ECAPPTYPE 
+      from  LPEDORAPP  a where  a.otherno= rpad(#contno#,20)
+     
+	</select>
+
+
+
+</sqlMap>

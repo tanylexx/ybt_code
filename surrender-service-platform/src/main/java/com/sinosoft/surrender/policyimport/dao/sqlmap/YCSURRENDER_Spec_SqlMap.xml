@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="POLICYIMPORTDEALDAO">
+	<resultMap id="querySurrenderResDTOResultMap" class="com.sinosoft.surrender.policyimport.dto.res.QuerySurrenderResDTO" >
+    	<result column="BANKCODE" property="bankCode" jdbcType="CHAR" />
+    	<result column="CONTNO" property="contNo" jdbcType="VARCHAR" />
+    	<result column="EDORTYPE" property="edorType" jdbcType="VARCHAR" />
+    	<result column="PROCESS_STATUS" property="acceptStatus" jdbcType="VARCHAR" />
+    	<result column="MODIFIED_DATE" property="importDate" jdbcType="DATE" />
+    	<result column="PROCESS_RESULT" property="desr" jdbcType="VARCHAR" />
+   </resultMap>
+   
+   <resultMap id="querySurrenderDataToCoreResultMap" class="com.sinosoft.surrender.policyimport.dto.SurrenderImportCoreDTO" >
+    	<result column="TRANSDATE" property="bankDate" jdbcType="DATE" />
+    	<result column="TRANSTIME" property="bankTime" jdbcType="CHAR" />
+    	<result column="BANKCODE" property="bankCode" jdbcType="CHAR" />
+    	<result column="ZONENO" property="zoneNo" jdbcType="CHAR" />
+    	<result column="BRNO" property="brNo" jdbcType="CHAR" />
+    	<result column="TELLERNO" property="tellerNo" jdbcType="VARCHAR" />
+    	<result column="TRANSNO" property="transNo" jdbcType="CHAR" />
+    	<result column="FUNCTIONFLAG" property="functionFlag" jdbcType="CHAR" />
+    	<result column="SOURCETYPE" property="sourceType" jdbcType="CHAR" />
+    	<result column="CONTNO" property="contNo" jdbcType="VARCHAR" />
+    	<result column="BANKACCNO" property="bankAccNo" jdbcType="VARCHAR" />
+    	<result column="BANKACCNAME" property="bankAccName" jdbcType="VARCHAR" />
+    	<result column="EDORPRTNO" property="edorPrtNo" jdbcType="VARCHAR" />
+    	<result column="APPLY_PREM" property="applyMoney" jdbcType="NUMBER" />
+    	<result column="EDORACCEPTNO" property="edorAcceptNo" jdbcType="VARCHAR" />
+   </resultMap>
+	
+	<!-- 更新数据:重新导入或保全撤销 -->
+	<update id="modifyProcessingState" parameterClass="com.sinosoft.surrender.policyimport.dto.req.PolicyApplyStateReviseReqDTO">
+		
+		update YCSURRENDER set
+		PROCESS_STATUS = #acceptStatus#,                        <!-- //处理状态 -->
+		MODIFIED_USER = 'LIS',               		            <!-- //修改用户 -->
+		MODIFIED_DATE = sysdate                                 <!-- //修改日期 -->
+		where CONTNO = #contNo#                                 <!-- //保单号 -->
+		and PROCESS_STATUS = 'F'                                <!-- //原先的状态必须是导入失败的 -->                               
+		and IS_DELETED = '0'
+	</update>
+	
+	
+	<!-- 查询页面数据-->
+	<select id="querySurrender" parameterClass="com.sinosoft.surrender.policyimport.dto.req.QuerySurrenderReqDTO"
+		resultMap="querySurrenderResDTOResultMap">
+		select BANKCODE,CONTNO,EDORTYPE,PROCESS_STATUS,MODIFIED_DATE,PROCESS_RESULT
+		from YCSURRENDER
+		<dynamic prepend = "where  IS_DELETED = '0' ">
+			<isNotNull property="bankCode">
+				 and BANKCODE=rpad(#bankCode#,10)
+			</isNotNull>
+			<isNotNull  property="contNo">
+				and CONTNO=#contNo#
+			</isNotNull>
+			<isNotNull  property="edorType">
+				and EDORTYPE=#edorType#
+			</isNotNull>
+			<isNotNull  property="acceptStatus">
+				and PROCESS_STATUS=#acceptStatus#
+			</isNotNull>
+			<isNotNull  property="startDate">
+				and MODIFIED_DATE <![CDATA[>=]]> #startDate#
+			</isNotNull>
+			<isNotNull  property="endDate">
+				and MODIFIED_DATE <![CDATA[<=]]> #endDate#
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<!-- 查询导入核心的数据 -->
+	<select id="querySurrenderDataToCore" resultMap="querySurrenderDataToCoreResultMap" parameterClass="java.util.Map">
+		select yt.TRANSDATE , yt.TRANSTIME , yt.ZONENO , yt.BRNO , yt.TELLERNO,
+				y.BANKCODE , y.TRANSNO , y.FUNCTIONFLAG , y.SOURCETYPE , y.CONTNO , 
+				y.BANKACCNO , y.BANKACCNAME , y.EDORPRTNO , y.APPLY_PREM , y.EDORACCEPTNO
+		from YCSURRENDER y,YKSURRENDERTRACE yt
+		where y.TRANSNO = yt.TRANSNO    <!-- 退保确认流水号 -->
+		and y.PROCESS_STATUS = '00'		<!-- 中间表处理状态：00-确认待导入 -->
+		and yt.TRANS_STATUS = '01'      <!-- 交易日志表交易状态：01-交易成功（退保确认成功） -->
+		and y.IS_DELETED = '0'
+		
+		<isNotNull property="rowNum">
+				 and ROWNUM <![CDATA[<=]]> #rowNum#
+		</isNotNull>
+		
+	</select>
+	
+	<update id="modifyProcessingStateImportToCore" parameterClass="java.util.Map">
+		update YCSURRENDER set
+		PROCESS_STATUS = #processStatus#,  <!-- 处理状态 -->
+		PROCESS_RESULT = #processResult#,  <!-- 处理结果 -->        
+		MODIFIED_USER = 'BATCH',             <!-- 修改用户 -->
+		MODIFIED_DATE = sysdate,            <!-- 修改日期 -->
+		PROCESS_COST = #processCost#       <!-- 导核心耗时 -->
+		where TRANSNO = rpad(#transNo#,35)
+		and CONTNO = #contNo#
+		and IS_DELETED = '0'
+	</update>
+</sqlMap>

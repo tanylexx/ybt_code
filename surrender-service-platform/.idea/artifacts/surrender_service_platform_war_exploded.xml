@@ -1,0 +1,122 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="surrender-service-platform:war exploded">
+    <output-path>$PROJECT_DIR$/target/surrender-service-platform</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>surrender-service-platform</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="surrender-service-platform" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.guohualife.platform:gh-platform:2.0.0" />
+          <element id="library" level="project" name="Maven: com.guohualife.common.util:gh-util-cache:1.7.8" />
+          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" />
+          <element id="library" level="project" name="Maven: redis.clients:jedis:2.8.3-guohua" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.4.2" />
+          <element id="library" level="project" name="Maven: com.googlecode.xmemcached:xmemcached:2.0.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.5" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: jaxen:jaxen:1.1.1" />
+          <element id="library" level="project" name="Maven: jdom:jdom:1.0" />
+          <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.3.02" />
+          <element id="library" level="project" name="Maven: xerces:xercesImpl:2.6.2" />
+          <element id="library" level="project" name="Maven: xom:xom:1.0" />
+          <element id="library" level="project" name="Maven: xerces:xmlParserAPIs:2.6.2" />
+          <element id="library" level="project" name="Maven: xalan:xalan:2.6.0" />
+          <element id="library" level="project" name="Maven: com.ibm.icu:icu4j:2.6.1" />
+          <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.29" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:1.3.1" />
+          <element id="library" level="project" name="Maven: commons-httpclient:commons-httpclient:3.1" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.0.4" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.2" />
+          <element id="library" level="project" name="Maven: com.guohualife.ebiz.config:gh-config-client:1.2.2" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/guohualife/common/util/gh-util-zk/1.1.1-SNAPSHOT/gh-util-zk-1.1.1-20160830.100436-1.jar" output-file-name="gh-util-zk-1.1.1-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: org.apache.zookeeper:zookeeper:3.4.7" />
+          <element id="library" level="project" name="Maven: org.apache.curator:curator-recipes:2.9.1" />
+          <element id="library" level="project" name="Maven: org.apache.curator:curator-framework:2.9.1" />
+          <element id="library" level="project" name="Maven: org.apache.curator:curator-client:2.9.1" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:16.0.1" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.3" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.6" />
+          <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: aspectj:aspectjweaver:1.5.3" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.2.9" />
+          <element id="library" level="project" name="Maven: xml-resolver:xml-resolver:1.2" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-jaxws_2.1_spec:1.0" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-activation_1.1_spec:1.0.2" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:1.1.2" />
+          <element id="library" level="project" name="Maven: asm:asm:2.2.3" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-api:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-utilities:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:1.0.1" />
+          <element id="library" level="project" name="Maven: wsdl4j:wsdl4j:1.6.2" />
+          <element id="library" level="project" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.5" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1" />
+          <element id="library" level="project" name="Maven: org.codehaus.woodstox:wstx-asl:3.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.neethi:neethi:2.0.4" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-schemas:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-core:2.2.9" />
+          <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.1.13" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.6" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-tools-common:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.2.9" />
+          <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.1" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.2.9" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.2.9" />
+          <element id="library" level="project" name="Maven: javax.xml.soap:saaj-api:1.3" />
+          <element id="library" level="project" name="Maven: com.sun.xml.messaging.saaj:saaj-impl:1.3.2" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.2.9" />
+          <element id="library" level="project" name="Maven: ojdbc:ojdbc:14" />
+          <element id="library" level="project" name="Maven: com.alibaba:druid:1.1.13" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sinosoft/surrender/surrender-service-client/1.0.0-SNAPSHOT/surrender-service-client-1.0.0-20201105.031138-3.jar" output-file-name="surrender-service-client-1.0.0-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/guohualife/common/util/gh-util-rpc/1.0.5-SNAPSHOT/gh-util-rpc-1.0.5-20181218.111612-2.jar" output-file-name="gh-util-rpc-1.0.5-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.4.7" />
+          <element id="library" level="project" name="Maven: xmlpull:xmlpull:1.1.3.1" />
+          <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.4c" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sinosoft/common/util/quartz/batch-util-quartz/1.0.0-SNAPSHOT/batch-util-quartz-1.0.0-20190306.103838-1.jar" output-file-name="batch-util-quartz-1.0.0-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:1.8.6" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.2.4.RELEASE" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sinosoft/surrender/db/surrender-db/1.0.0-SNAPSHOT/surrender-db-1.0.0-20201105.110322-7.jar" output-file-name="surrender-db-1.0.0-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.3" />
+          <element id="library" level="project" name="Maven: org.apache.ibatis:ibator:1.5.0" />
+          <element id="library" level="project" name="Maven: org.apache.ibatis:ibatis-sqlmap:2.3.4.726" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sinosoft/ybt/ybt-savemsg-client/1.0.0-SNAPSHOT/ybt-savemsg-client-1.0.0-20200314.122659-3.jar" output-file-name="ybt-savemsg-client-1.0.0-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/guohualife/common/util/gh-util-mq/1.1.8-SNAPSHOT/gh-util-mq-1.1.8-20190820.113232-9.jar" output-file-name="gh-util-mq-1.1.8-SNAPSHOT.jar" />
+          <element id="library" level="project" name="Maven: com.alibaba.rocketmq:rocketmq-client:3.2.6" />
+          <element id="library" level="project" name="Maven: com.alibaba.rocketmq:rocketmq-common:3.2.6" />
+          <element id="library" level="project" name="Maven: com.alibaba.rocketmq:rocketmq-remoting:3.2.6" />
+          <element id="library" level="project" name="Maven: io.netty:netty-all:4.0.25.Final" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.2.16.RELEASE" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.5" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sinosoft/lis/lis-endorsement-webservice/0.0.1-SNAPSHOT/lis-endorsement-webservice-0.0.1-20201112.021657-16.jar" output-file-name="lis-endorsement-webservice-0.0.1-SNAPSHOT.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sinosoft/lis/lis-utils/0.0.1-SNAPSHOT/lis-utils-0.0.1-20201112.061344-4.jar" output-file-name="lis-utils-0.0.1-SNAPSHOT.jar" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/surrender-service-platform/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="surrender-service-platform/web/Web" />
+    </root>
+  </artifact>
+</component>

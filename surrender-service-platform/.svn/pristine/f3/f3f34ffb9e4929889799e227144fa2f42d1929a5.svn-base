@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//Apache Software Foundation//DTD Apache SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LmCalFactorSpecDAO">
+
+	<select id="getFactorByCalCode" parameterClass="java.lang.String"
+		resultClass="com.sinosoft.surrender.db.model.LmCalFactor">
+	select trim(CALCODE) CALCODE, trim(FACTORCODE) FACTORCODE, FACTORNAME, trim(FACTORTYPE)
+      FACTORTYPE, trim(FACTORGRADE) FACTORGRADE, trim(FACTORCALCODE) FACTORCALCODE, FACTORDEFAULT 
+      from LmCalFactor where calcode = rpad(#calCode#,6)
+	     
+	</select>
+
+</sqlMap>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//Apache Software Foundation//DTD Apache SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LMPOLDUTYEDORCALSPECDAO">
+
+	<select id="getLmPolDutyEdorCalInfos" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LmPolDutyEdorCal">
+		select trim(DUTYCODE) DUTYCODE,
+		 trim(EDORTYPE) EDORTYPE, 
+		 FEETYPE, 
+		 RISKCODE, 
+		 trim(CALMODE)
+         CALMODE,
+         trim(CHGPREMCALCODE) CHGPREMCALCODE, 
+         trim(INTERESTCALCODE) INTERESTCALCODE,
+          OTHERCALCODE
+		from LMPOLDUTYEDORCAL a
+		where a.riskcode = #riskcode#
+		and a.dutycode = rpad(#dutycode#, 10)
+		and a.edortype = 'CT'
+		and a.feetype = 'PREMCV'
+
+	</select>
+
+</sqlMap>

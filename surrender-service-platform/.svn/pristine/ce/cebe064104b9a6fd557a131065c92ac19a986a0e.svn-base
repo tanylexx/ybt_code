@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LDINTEGRATIONRATESPECDAO">
+
+	<select id="getLdIntegrationRateInfos" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LdIntegrationRate">
+		select ENDDATE, MANAGECOM, trim(RATEINTV) RATEINTV, RATEKIND, trim(RATETYPE) RATETYPE,
+      STARTDATE, RATE, OTHERRATE 
+      from ldintegrationrate a where a.STARTDATE <![CDATA[ <=  ]]>
+		#enddate# and a.Enddate <![CDATA[ >=  ]]>
+		#startdate# and a.ratekind='aliveRate'
+	</select>
+
+
+
+</sqlMap>

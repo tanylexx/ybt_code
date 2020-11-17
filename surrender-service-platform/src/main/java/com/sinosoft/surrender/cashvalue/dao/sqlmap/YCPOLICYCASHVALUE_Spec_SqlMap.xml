@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="YCPOLICYCASHVALUESPECDAO">
+
+	<select id="getYcPolicyCashValue" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.YcPolicyCashValue">
+
+		select SID,
+		CONTNO,
+		APPLY_DATE APPLYDATE,
+		CASHVALUE,
+		CHARGEFEE,
+		CAL_DATE CALDATE,
+		CREATED_USER CREATEDUSER,
+		CREATED_DATE CREATEDDATE,
+		MODIFIED_USER MODIFIEDUSER,
+		MODIFIED_DATE MODIFIEDDATE,
+		IS_DELETED ISDELETED,
+		EDORTYPE
+		from YCPOLICYCASHVALUE a
+		where A.CONTNO =#contno#
+		AND
+		A.apply_date = #applydate# and
+		EDORTYPE=#edortype# and
+		a.is_deleted='0'
+
+	</select>
+
+	<select id="findYcPolicyCashValue" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select CASHVALUE
+		from YCPOLICYCASHVALUE
+		where
+		CONTNO=#contNo#
+		and CAL_DATE=#confirmDate#
+		and
+		EDORTYPE=#edorType#
+		and
+		is_deleted='0'
+	</select>
+	
+	<select id="findYcPolicyCashValueToConfirm" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select CASHVALUE
+		from YCPOLICYCASHVALUE
+		where
+		CONTNO=#contNo#
+		and CAL_DATE=#confirmDate#
+		and
+		EDORTYPE=#edorType#
+		and
+		MODIFIED_USER !='YJSBATCH'
+		and
+		is_deleted='0'
+	</select>
+	
+
+	<select id="getAllYcPolicyCashValue" resultClass="com.sinosoft.surrender.db.model.YcPolicyCashValue">
+		select SID,
+		CONTNO,
+		APPLY_DATE APPLYDATE,
+		CASHVALUE,
+		CHARGEFEE,
+		CAL_DATE CALDATE,
+		CREATED_USER CREATEDUSER,
+		CREATED_DATE CREATEDDATE,
+		MODIFIED_USER MODIFIEDUSER,
+		MODIFIED_DATE MODIFIEDDATE,
+		IS_DELETED ISDELETED,
+		EDORTYPE
+		from
+		YCPOLICYCASHVALUE
+		where IS_DELETED='0'
+	</select>
+
+	<update id="updateAllYcPolicyCashValue">
+		update YCPOLICYCASHVALUE a set a.is_deleted='1'
+	</update>
+
+
+	<update id="updateYcPolicyCashValueByKey">
+		update YCPOLICYCASHVALUE a set a.is_deleted='1' 
+		where A.CONTNO =#contno# 
+		AND 
+		A.apply_date = #applydate# 
+		and
+		EDORTYPE=#edortype# 
+		and 
+		a.is_deleted='0'
+	</update>
+
+	<select id="getDaysAgoYcPolicyCashValue" parameterClass="java.util.Date"
+		resultClass="com.sinosoft.surrender.db.model.YcPolicyCashValue">
+		select *
+		from YcPolicyCashValue b
+		where b.apply_date <![CDATA[<]]>  #date#
+		and b.is_deleted='0'
+		order by b.apply_date desc
+	</select>
+
+</sqlMap>

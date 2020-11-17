@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="YCSURRENDERSPECDAO">
+
+	<select id="findSurrenderTrace" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.YcSurrender">
+		select
+		SID,
+		trim(TRANSNO) TRANSNO,
+		CONTNO,
+		APPLY_PLATFORM APPLYPLATFORM,
+		EDORTYPE,
+		APPLY_PREM APPLYPREM,
+		trim(FUNCTIONFLAG) FUNCTIONFLAG,
+		trim(BANKCODE) BANKCODE,
+		trim(SOURCETYPE) SOURCETYPE,
+		CONFIRM_DATE CONFIRMDATE,
+		EDORPRTNO,
+		EDORACCEPTNO,
+		BANKACCNO,
+		BANKACCNAME,
+		PROCESS_STATUS PROCESSSTATUS,
+		PROCESS_RESULT PROCESSRESULT,
+		PROCESS_COST PROCESSCOST,
+		CREATED_USER CREATEDUSER,
+		CREATED_DATE CREATEDDATE,
+		MODIFIED_USER MODIFIEDUSER,
+		MODIFIED_DATE MODIFIEDDATE,
+		IS_DELETED ISDELETED
+		from YCSURRENDER
+		where CONTNO = #contno#             <!-- 保单号 -->
+		and PROCESS_STATUS <![CDATA[<>]]>
+		'02' and IS_DELETED = '0'<!-- 交易状态不等于02保全撤销 -->
+	</select>
+
+
+
+
+	<update id="updateYcSurrenderByKey"
+		parameterClass="java.util.Map">
+		update YCSURRENDER a set a.is_deleted='1' where
+		A.edoracceptno =#edoracceptno#
+		and EDORTYPE = #edortype#
+		and PROCESS_STATUS = '01'
+		and a.is_deleted='0'
+	</update>
+
+
+
+
+
+	<select id="findConfirmList"
+		resultClass="com.sinosoft.surrender.db.model.YcSurrender">
+		select
+		SID,
+		trim(TRANSNO) TRANSNO,
+		CONTNO,
+		APPLY_PLATFORM APPLYPLATFORM,
+		EDORTYPE,
+		APPLY_PREM APPLYPREM,
+		trim(FUNCTIONFLAG) FUNCTIONFLAG,
+		trim(BANKCODE) BANKCODE,
+		trim(SOURCETYPE) SOURCETYPE,
+		CONFIRM_DATE CONFIRMDATE,
+		EDORPRTNO,
+		EDORACCEPTNO,
+		BANKACCNO,
+		BANKACCNAME,
+		PROCESS_STATUS PROCESSSTATUS,
+		PROCESS_RESULT PROCESSRESULT,
+		PROCESS_COST PROCESSCOST,
+		CREATED_USER CREATEDUSER,
+		CREATED_DATE CREATEDDATE,
+		MODIFIED_USER MODIFIEDUSER,
+		MODIFIED_DATE MODIFIEDDATE,
+		IS_DELETED ISDELETED
+		from YCSURRENDER
+		where PROCESS_STATUS <![CDATA[<>]]>
+		'02' and IS_DELETED =
+		'0' <!-- 交易状态等于00保全撤销 -->
+	</select>
+
+
+	<!-- 根据保单号查询退保或给付金额 -->
+	<select id="getApplyPremByContNo" parameterClass="java.lang.String" resultClass="java.math.BigDecimal">
+		SELECT apply_prem
+		FROM ycsurrender
+		WHERE contno = #contno#
+	</select>
+
+
+</sqlMap>

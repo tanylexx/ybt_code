@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SURRENDERMSGURLSPECDAO">
+	 
+   <resultMap id="querySurrenderDataToCoreResultMap" class="com.sinosoft.surrender.message.dto.SurrenderSendMsgUrReqlDTO" >
+    	<result column="TRANSDATE" property="bankDate" jdbcType="DATE" />
+    	<result column="BANKCODE" property="bankCode" jdbcType="CHAR" />
+    	<result column="ZONENO" property="zoneNo" jdbcType="CHAR" />
+    	<result column="BRNO" property="brNo" jdbcType="CHAR" />
+    	<result column="TELLERNO" property="tellerNo" jdbcType="VARCHAR" />
+    	<result column="TRANSNO" property="transNo" jdbcType="CHAR" />
+    	<result column="FUNCTIONFLAG" property="functionFlag" jdbcType="CHAR" />
+    	<result column="SOURCETYPE" property="sourceType" jdbcType="CHAR" />
+    	<result column="CONTNO" property="contNo" jdbcType="VARCHAR" />
+    	<result column="EDORPRTNO" property="edorPrtNo" jdbcType="VARCHAR" />
+    	<result column="EDORACCEPTNO" property="edoracceptno" jdbcType="VARCHAR" />
+    	<result column="EDORTYPE" property="edorType" jdbcType="VARCHAR"  />  
+   </resultMap>
+   
+	
+	<!-- 查询投保人电话号码 -->
+	<select id="queryAppntPhone" resultClass="java.lang.String" parameterClass="java.lang.String">
+		select b.mobile
+            from lcappnt a, lcaddress b
+             where a.contno = rpad(#contNo#, 20)
+                   and a.addressno = b.addressno
+                   and a.appntno = b.customerno
+	</select>
+	
+	<!-- 轨迹表和短信表查询需要发链接短信的数据 -->
+	<select id="getSendMsgUrlOfContNoList" resultClass="java.lang.String" >
+	 select a.contno
+      from ycsendmessage a
+     where a.process_status = '01'
+       and a.is_deleted = '0'
+       and a.MODIFIED_USER = 'NEWMESSAGE'
+       and a.sourcetype !='2'
+       and exists (select 1
+              from ycsurrender b
+             where a.contno = b.contno
+               and b.confirm_date > date '2019-12-22' and b.is_deleted = '0')
+       and not exists (select 1
+              from yksurrendertrace c
+             where a.contno = c.contno
+               and c.functionflag = '63'
+               and c.is_deleted = '0'
+               and c.sourcetype != '2')
+	</select>
+	
+	<!-- 为入参DTO赋值 -->
+	<select id="getSurrenderMsgUrlParam" resultMap="querySurrenderDataToCoreResultMap" parameterClass="java.lang.String">
+		select yt.TRANSDATE , yt.TRANSTIME , yt.ZONENO , yt.BRNO , yt.TELLERNO,
+				y.BANKCODE , y.TRANSNO , y.FUNCTIONFLAG , y.SOURCETYPE , y.CONTNO , 
+				y.BANKACCNO , y.BANKACCNAME , y.EDORPRTNO , y.APPLY_PREM , y.EDORACCEPTNO,
+				y.edorType,y.edoracceptno
+		from YCSURRENDER y,YKSURRENDERTRACE yt
+		where y.contno = yt.contno    <!-- 退保确认流水号 -->
+		and yt.TRANS_STATUS = '01'      <!-- 交易日志表交易状态：01-交易成功（退保确认成功） -->
+		and y.IS_DELETED = '0'
+		and yt.contno=#contNo#
+		AND yt.FUNCTIONFLAG in ('27','12')
+	</select>
+	
+	<select id="queryMessageUrlByContNo" resultClass="java.lang.String" >
+	select contno 
+	from yksurrendertrace 
+	where contno = #contNo#
+	and functionflag = '63'
+	and is_deleted = '0'
+	</select>
+	
+	<update id="updateUrlStatusByContNo">
+	 update yksurrendertrace
+    set 
+      IS_DELETED = '1'
+    where CONTNO = #contno# and IS_DELETED = '0'
+	</update>
+</sqlMap>

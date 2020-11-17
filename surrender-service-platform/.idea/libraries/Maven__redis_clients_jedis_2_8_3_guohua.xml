@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: redis.clients:jedis:2.8.3-guohua">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.8.3-guohua/jedis-2.8.3-guohua.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.8.3-guohua/jedis-2.8.3-guohua-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.8.3-guohua/jedis-2.8.3-guohua-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

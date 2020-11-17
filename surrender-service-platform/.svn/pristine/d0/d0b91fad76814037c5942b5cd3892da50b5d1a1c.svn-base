@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LCINSUREACCTRACESPECDAO">
+	<select id="getLcInsureAccTraceInfos" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LcInsureAccTrace">
+
+		select trim(SERIALNO) SERIALNO, trim(GRPCONTNO) GRPCONTNO, trim(GRPPOLNO) GRPPOLNO, trim(CONTNO)
+      CONTNO, trim(POLNO) POLNO, trim(INSUACCNO) INSUACCNO, RISKCODE, trim(PAYPLANCODE) PAYPLANCODE,
+      trim(OTHERNO) OTHERNO, trim(OTHERTYPE) OTHERTYPE, trim(ACCASCRIPTION) ACCASCRIPTION,
+      trim(MONEYTYPE) MONEYTYPE, MONEY, UNITCOUNT, PAYDATE, trim(STATE) STATE, trim(MANAGECOM)
+      MANAGECOM, OPERATOR, MAKEDATE, trim(MAKETIME) MAKETIME, MODIFYDATE, trim(MODIFYTIME)
+      MODIFYTIME, BUSYTYPE, SHOULDVALUEDATE, VALUEDATE, trim(INSUACCSUBNO) INSUACCSUBNO 
+      from lcinsureacctrace a where a.polno= rpad(#polno#,20) and
+		a.insuaccno = rpad(#insuaccno#,20) and a.moneytype = 'SC' order by a.paydate asc
+	</select>
+</sqlMap>

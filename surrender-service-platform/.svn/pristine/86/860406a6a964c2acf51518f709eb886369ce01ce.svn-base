@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ADDPREMSPEC">
+    <resultMap id="queryAddPremDataToCoreResultMap" class="com.sinosoft.surrender.addprem.dto.AddPremImportDto" >
+        <result column="CONTNO" property="contNo" jdbcType="VARCHAR" />
+        <result column="TRANSRNO" property="transNo" jdbcType="VARCHAR" />
+        <result column="APPTYPE" property="appType" jdbcType="VARCHAR" />
+        <result column="ZONENO" property="zoneNo" jdbcType="VARCHAR" />
+        <result column="BRNO" property="brNo" jdbcType="VARCHAR" />
+        <result column="BANKCODE" property="bankCode" jdbcType="VARCHAR" />
+        <result column="TRANSDATE" property="transDate" jdbcType="DATE" />
+        <result column="PREM" property="prem" jdbcType="NUMBER" />
+        <result column="AMNT" property="amnt" jdbcType="NUMBER" />
+        <result column="INSUYEAR" property="remainInsuyear" jdbcType="VARCHAR" />
+        <result column="CVALIDATE" property="cValidate" jdbcType="DATE" />
+        <result column="APPLYDATE" property="applyDate" jdbcType="DATE" />
+        <result column="EDORACCEPTNO" property="edorAcceptNo" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getCalCode" parameterClass="java.util.Map" resultClass="java.lang.String">
+      select distinct (CalCode)
+        from LMDutyGet
+        where GetdutyCode in (select GetdutyCode
+            from LCget
+            where contno = rpad(#contno#,20,' ')
+            and polno = rpad(#polno#,20,' '))
+	</select>
+
+    <!-- 查询导入核心的数据 -->
+    <select id="querySurrenderDataToCore" resultMap="queryAddPremDataToCoreResultMap" parameterClass="java.util.Map">
+        select a.contno,
+        a.transrno,
+        a.apptype,
+        b.transdate,
+        trim(b.bankcode) bankcode,
+        trim(b.zoneno) zoneno,
+        trim(b.brno) brno,
+        a.prem,
+        a.amnt,
+        a.insuyear,
+        a.cvalidate,
+        a.applydate,
+        trim(a.edoracceptno) edoracceptno
+        from ycaddprem a, yksurrendertrace b
+        where a.process_status = '00'
+        and b.transno = rpad(a.transrno,35,' ')
+        and a.contno = b.contno
+        and b.trans_status = '01'
+        and a.IS_DELETED = '0'
+        <isNotNull property="rowNum">
+            and ROWNUM <![CDATA[<=]]> #rowNum#
+        </isNotNull>
+    </select>
+
+    <update id="modifyProcessingStateImportToCore" parameterClass="java.util.Map">
+        update ycaddprem set
+        PROCESS_STATUS = #processStatus#,  <!-- 处理状态 -->
+        PROCESS_RESULT = #processResult#,  <!-- 处理结果 -->
+        MODIFIED_USER = 'BATCH',             <!-- 修改用户 -->
+        MODIFIED_DATE = sysdate,            <!-- 修改日期 -->
+        PROCESS_COST = #processCost#       <!-- 导核心耗时 -->
+        where TRANSRNO = #transNo#
+        and CONTNO = #contNo#
+        and IS_DELETED = '0'
+    </update>
+
+    <select id="calRiskAmnt" parameterClass="java.util.Map" resultClass="java.lang.String">
+      select RISKAMNTGHYBT(rpad(#insuredno#,24,' '), rpad(#contno#,20,' '), #type#, to_number(#newInsuredFlag#))
+		  from dual
+		 where 1 = 1
+	</select>
+
+</sqlMap>

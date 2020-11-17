@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LPEDORITEMSPECDAO">
+
+	<select id="getLpEdorItemInfo" parameterClass="java.lang.String"
+		resultClass="com.sinosoft.surrender.db.model.LpEdorItem">
+		  select 
+		  trim(CONTNO) CONTNO, trim(EDORACCEPTNO) EDORACCEPTNO, trim(EDORNO) EDORNO, trim(EDORTYPE)
+      EDORTYPE, trim(INSUREDNO) INSUREDNO, trim(POLNO) POLNO, trim(EDORAPPNO) EDORAPPNO,
+      trim(DISPLAYTYPE) DISPLAYTYPE, trim(GRPCONTNO) GRPCONTNO, trim(MANAGECOM) MANAGECOM,
+      EDORVALIDATE, EDORAPPDATE, EDORSTATE, trim(UWFLAG) UWFLAG, UWOPERATOR, UWDATE, trim(UWTIME)
+      UWTIME, CHGPREM, CHGAMNT, GETMONEY, GETINTEREST, OPERATOR, MAKEDATE, MAKETIME, MODIFYDATE,
+      MODIFYTIME, EDORREASONNO, EDORREASON, REASON, trim(REASONCODE) REASONCODE, APPROVEGRADE,
+      APPROVESTATE, APPROVEOPERATOR, APPROVEDATE, trim(APPROVETIME) APPROVETIME, DISOPERATOR,
+      trim(EDORAPPTIME) EDORAPPTIME
+      from lpedoritem a where a.edoracceptno = rpad(#edorAcceptno#,20)
+	</select>
+
+</sqlMap>

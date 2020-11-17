@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SURENDERTRACESPECDAO">
+	<select id="getYkSurrenderTraceInfo" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.YkSurrenderTrace">
+
+		select 
+		SID, 
+		trim(TRANSNO) TRANSNO, 
+		TRANSDATE, 
+		trim(TRANSTIME) TRANSTIME, 
+		TELLERNO, 
+		trim(ZONENO)
+      ZONENO, 
+      trim(BRNO) BRNO, 
+      trim(BANKCODE) BANKCODE, 
+      CASHVALUE, 
+      trim(SOURCETYPE) SOURCETYPE,
+      CONTNO, 
+      trim(FUNCTIONFLAG) FUNCTIONFLAG, 
+      TRANS_STATUS TRANSSTATUS, 
+      DESR, 
+      ROCESS_COST ROCESSCOST, 
+      CREATED_DATE CREATEDDATE,
+      CREATED_USER CREATEDUSER, 
+      MODIFIED_USER MODIFIEDUSER, 
+      MODIFIED_DATE MODIFIEDDATE, 
+      IS_DELETED  ISDELETED
+      from YKSURRENDERTRACE a 
+      where A.CONTNO = #contno#
+		AND
+		A.TRANSDATE = #applydate# 
+		AND a.TRANS_STATUS='01' 
+		and
+		a.is_deleted='0'
+
+	</select>
+
+
+
+</sqlMap>

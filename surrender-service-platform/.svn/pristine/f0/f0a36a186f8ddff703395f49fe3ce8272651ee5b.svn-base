@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LMEDORZT1SPECDAO">
+	<select id="getLmEdorZT1Infos" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LmEdorZT1">
+
+		select trim(DUTYCODE) DUTYCODE, trim(PAYPLANCODE) PAYPLANCODE, RISKCODE, trim(CYCPAYCALCODE)
+      CYCPAYCALCODE, trim(ONEPAYCALCODE) ONEPAYCALCODE, trim(CYCPAYINTVTYPE) CYCPAYINTVTYPE,
+      trim(ONEPAYINTVTYPE) ONEPAYINTVTYPE, trim(LIVEGETTYPE) LIVEGETTYPE, trim(DEADGETTYPE)
+      DEADGETTYPE, trim(OUTGETTYPE) OUTGETTYPE, trim(CASHVALUECODE) CASHVALUECODE, trim(CALCODETYPE)
+      CALCODETYPE, trim(ZTYEARTYPE) ZTYEARTYPE
+	 from lmedorzt1 a
+		where a.riskcode = #riskcode#
+		and a.dutycode = rpad(#dutycode#, 10)
+		and a.payplancode = '000000'
+
+	</select>
+
+
+
+</sqlMap>

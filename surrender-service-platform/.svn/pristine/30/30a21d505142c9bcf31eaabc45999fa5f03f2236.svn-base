@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="YKSURRENDERTRACESPECDAO">
+	<!-- 查询交易记录的SQL -->
+	<select id="findSurrenderTrace" parameterClass="com.sinosoft.surrender.surrconfirm.dto.req.SurrenderConfirmReqDTO"
+		resultClass="com.sinosoft.surrender.db.model.YkSurrenderTrace">
+		
+	  select SID,
+         trim(TRANSNO) TRANSNO,
+         TRANSDATE,
+         trim(TRANSTIME) TRANSTIME,
+         TELLERNO,
+         trim(ZONENO) ZONENO,
+         trim(BRNO) BRNO,
+         trim(BANKCODE) BANKCODE,
+         CASHVALUE,
+         trim(SOURCETYPE) SOURCETYPE,
+         CONTNO,
+         trim(FUNCTIONFLAG) FUNCTIONFLAG,
+         TRANS_STATUS TRANSSTATUS,
+         DESR,
+         ROCESS_COST ROCESSCOST,
+         CREATED_DATE CREATEDDATE,
+         CREATED_USER CREATEDUSER,
+         MODIFIED_USER MODIFIEDUSER,
+         MODIFIED_DATE MODIFIEDDATE,
+         IS_DELETED ISDELETED
+    from YKSURRENDERTRACE t
+		where t.TRANSDATE=#confirmDate#             <!-- 交易日期 -->
+		and t.contno=#contNo#                       <!-- 保单号 -->                      
+		and t.TRANS_STATUS='01'						<!-- 交易状态 -->
+		and t.IS_DELETED = '0'
+		and (t.FUNCTIONFLAG='24' or t.FUNCTIONFLAG='26') <!-- 交易类型 -->
+	</select>
+	
+</sqlMap>

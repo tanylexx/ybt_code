@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LCINSUREACCSPECDAO">
+	<select id="getLcInsureAccByNoAndType" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LcInsureAcc">
+       select trim(INSUACCNO) INSUACCNO, trim(POLNO) POLNO, trim(CONTNO) CONTNO, trim(GRPCONTNO)
+      GRPCONTNO, trim(GRPPOLNO) GRPPOLNO, trim(PRTNO) PRTNO, RISKCODE, trim(ACCTYPE) ACCTYPE,
+      trim(INVESTTYPE) INVESTTYPE, trim(FUNDCOMPANYCODE) FUNDCOMPANYCODE, trim(INSUREDNO) INSUREDNO,
+      trim(APPNTNO) APPNTNO, trim(OWNER) OWNER, trim(ACCCOMPUTEFLAG) ACCCOMPUTEFLAG, ACCFOUNDDATE,
+      trim(ACCFOUNDTIME) ACCFOUNDTIME, BALADATE, trim(BALATIME) BALATIME, SUMPAY, SUMPAYM,
+      LASTACCBALA, LASTUNITCOUNT, LASTUNITPRICE, INSUACCBALA, UNITCOUNT, UNITPRICE, INSUACCGETMONEY,
+      FROZENMONEY, trim(STATE) STATE, trim(MANAGECOM) MANAGECOM, OPERATOR, MAKEDATE, trim(MAKETIME)
+      MAKETIME, MODIFYDATE, trim(MODIFYTIME) MODIFYTIME
+       from lcinsureacc  a where  a.polno= rpad(#polno#,20) and a.acctype = rpad(#acctype#,3)
+	</select>
+
+
+
+</sqlMap>

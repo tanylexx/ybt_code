@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="YCSENDMESSAGESPECDAO">
+
+	<select id="getSendMessageInfo"
+		resultClass="com.sinosoft.surrender.db.model.YcSendMessage">
+		select
+		CONTNO,
+		EDORTYPE,
+		BANKCODE
+		from YCSENDMESSAGE
+		where 
+		 PROCESS_STATUS ='00'  <!-- 交易状态不等于02保全撤销 -->
+		and IS_DELETED = '0'  
+	</select>
+
+
+	<update id="updateYcSendMessageByContNo"
+		parameterClass="com.sinosoft.surrender.db.model.YcSendMessage">
+	 update YCSENDMESSAGE
+    set 
+      PROCESS_STATUS = #processStatus:VARCHAR#,
+      PROCESS_RESULT = #processResult:VARCHAR#,
+      PROCESS_COST = #processCost:DECIMAL#,
+      MODIFIED_USER = #modifiedUser:VARCHAR#,
+      MODIFIED_DATE = #modifiedDate:DATETIME#
+    where CONTNO = #contno# and IS_DELETED = '0'
+	</update>
+	
+	
+		<select id="querySendMessageByContno"
+		resultClass="com.sinosoft.surrender.db.model.YcSendMessage">
+		select
+		CONTNO,
+		EDORTYPE,
+		BANKCODE
+		from YCSENDMESSAGE
+		where 
+		CONTNO = #contno# 
+		and IS_DELETED = '0'
+		and APPLY_PLATFORM = 'YBTMSGURL'
+	</select>
+	
+	<update id="updateStatusByContNo">
+	 update YCSENDMESSAGE
+    set 
+      IS_DELETED = '1'
+    where CONTNO = #contno# and IS_DELETED = '0' and APPLY_PLATFORM = 'YBTMSGURL'
+	</update>
+</sqlMap>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="INTERESTSPEC">
+	<select id="findByContno" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select b.rate from interest000001 b , lcinsureacc c
+		where
+		b.insuaccno =trim(c.insuaccno)
+		and c.contno= rpad(#contno#,20)
+		and
+		b.lastbaladate= #date#
+		and exists(
+		select 1 from interest000001 b
+		where b.startdate=#date#
+		)
+
+	</select>
+
+	<select id="findMaxEndDateByContnoAndRikcode" parameterClass="java.util.Map"
+		resultClass="java.util.Date">
+		select max(trunc(b.enddate)) from interest000001 b, lcinsureacc c
+		where b.insuaccno =trim(c.insuaccno)
+		and c.riskcode = #riskcode#
+		and c.contno= rpad(#contno#,20)
+		and (
+			(#cvalidate# <![CDATA[<=]]> b.cvenddate and b.cvenddate is null )
+			or
+			(#cvalidate# <![CDATA[>=]]> b.cvstartdate and b.cvstartdate is null )
+			or
+			(b.cvstartdate <![CDATA[<=]]> #cvalidate# and #cvalidate# <![CDATA[<=]]> b.cvenddate and b.cvenddate is not null and b.cvstartdate is not null)
+			or
+			(b.cvenddate is null and b.cvstartdate is null)   
+		)
+
+	</select>
+
+</sqlMap>

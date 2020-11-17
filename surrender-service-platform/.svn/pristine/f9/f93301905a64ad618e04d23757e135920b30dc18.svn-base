@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LCPOLSPECDAO">
+	<resultMap id="PolicyCashValueReqDTOResultMap"
+		class="com.sinosoft.surrender.cashvalue.dto.req.PolicyCashValueReqDTO">
+		<result column="POLNO" property="contNo" jdbcType="CHAR" />
+		<result column="BANKBRANCH" property="zoneNo" jdbcType="CHAR" />
+		<result column="BANKNODE" property="brNo" jdbcType="CHAR" />
+		<result column="BANKCODE" property="bankCode" jdbcType="CHAR" />
+		<result column="ISSUEWAY" property="sourceType" jdbcType="CHAR" />
+		<result column="FUNCFLAG" property="functionFlag" jdbcType="CHAR" />
+
+	</resultMap>
+
+	<select id="getLcPolByContNo" parameterClass="java.lang.String"
+		resultClass="com.sinosoft.surrender.db.model.LcPol">
+
+		select trim(POLNO) POLNO, trim(GRPCONTNO) GRPCONTNO,
+		trim(GRPPOLNO) GRPPOLNO, trim(CONTNO)
+		CONTNO, trim(PROPOSALNO) PROPOSALNO, trim(PRTNO) PRTNO, trim(CONTTYPE)
+		CONTTYPE,
+		trim(POLTYPEFLAG) POLTYPEFLAG, trim(MAINPOLNO) MAINPOLNO, trim(MASTERPOLNO)
+		MASTERPOLNO,
+		trim(KINDCODE) KINDCODE, RISKCODE, trim(RISKVERSION) RISKVERSION, trim(MANAGECOM)
+		MANAGECOM,
+		trim(AGENTCOM) AGENTCOM, trim(AGENTTYPE) AGENTTYPE, trim(AGENTCODE) AGENTCODE,
+		trim(AGENTGROUP) AGENTGROUP, trim(AGENTCODE1) AGENTCODE1,
+		trim(SALECHNL) SALECHNL, HANDLER,
+		trim(INSUREDNO) INSUREDNO, INSUREDNAME, trim(INSUREDSEX) INSUREDSEX, INSUREDBIRTHDAY,
+		INSUREDAPPAGE, INSUREDPEOPLES, trim(OCCUPATIONTYPE) OCCUPATIONTYPE,
+		trim(APPNTNO) APPNTNO,
+		APPNTNAME, CVALIDATE, trim(SIGNCOM) SIGNCOM, SIGNDATE, trim(SIGNTIME) SIGNTIME,
+		FIRSTPAYDATE,
+		PAYENDDATE, PAYTODATE, GETSTARTDATE, ENDDATE, ACCIENDDATE, trim(GETYEARFLAG)
+		GETYEARFLAG,
+		GETYEAR, trim(PAYENDYEARFLAG) PAYENDYEARFLAG, PAYENDYEAR, trim(INSUYEARFLAG)
+		INSUYEARFLAG,
+		INSUYEAR, trim(ACCIYEARFLAG) ACCIYEARFLAG, ACCIYEAR, trim(GETSTARTTYPE)
+		GETSTARTTYPE,
+		trim(SPECIFYVALIDATE) SPECIFYVALIDATE, trim(PAYMODE) PAYMODE, trim(PAYLOCATION)
+		PAYLOCATION,
+		PAYINTV, PAYYEARS, YEARS, MANAGEFEERATE, FLOATRATE, trim(PREMTOAMNT)
+		PREMTOAMNT, MULT,
+		STANDPREM, PREM, SUMPREM, AMNT, RISKAMNT, LEAVINGMONEY, ENDORSETIMES,
+		CLAIMTIMES, LIVETIMES,
+		RENEWCOUNT, LASTGETDATE, LASTLOANDATE, LASTREGETDATE, LASTEDORDATE, LASTREVDATE,
+		RNEWFLAG,
+		trim(STOPFLAG) STOPFLAG, trim(EXPIRYFLAG) EXPIRYFLAG, trim(AUTOPAYFLAG) AUTOPAYFLAG,
+		trim(INTERESTDIFFLAG) INTERESTDIFFLAG, trim(SUBFLAG) SUBFLAG,
+		trim(BNFFLAG) BNFFLAG,
+		trim(HEALTHCHECKFLAG) HEALTHCHECKFLAG, trim(IMPARTFLAG) IMPARTFLAG, trim(REINSUREFLAG)
+		REINSUREFLAG, trim(AGENTPAYFLAG) AGENTPAYFLAG, trim(AGENTGETFLAG)
+		AGENTGETFLAG,
+		trim(LIVEGETMODE) LIVEGETMODE, trim(DEADGETMODE) DEADGETMODE, trim(BONUSGETMODE)
+		BONUSGETMODE,
+		trim(BONUSMAN) BONUSMAN, trim(DEADFLAG) DEADFLAG, trim(SMOKEFLAG) SMOKEFLAG, REMARK,
+		trim(APPROVEFLAG) APPROVEFLAG, APPROVECODE, APPROVEDATE,
+		trim(APPROVETIME) APPROVETIME,
+		trim(UWFLAG) UWFLAG, UWCODE, UWDATE, trim(UWTIME) UWTIME, POLAPPLYDATE,
+		trim(APPFLAG) APPFLAG,
+		trim(POLSTATE) POLSTATE, trim(STANDBYFLAG1) STANDBYFLAG1, trim(STANDBYFLAG2)
+		STANDBYFLAG2,
+		trim(STANDBYFLAG3) STANDBYFLAG3, OPERATOR, MAKEDATE, trim(MAKETIME) MAKETIME,
+		MODIFYDATE,
+		trim(MODIFYTIME) MODIFYTIME, WAITPERIOD, trim(PAYRULECODE) PAYRULECODE,
+		trim(ASCRIPTIONRULECODE) ASCRIPTIONRULECODE, trim(SALECHNLDETAIL)
+		SALECHNLDETAIL, RISKSEQNO,
+		POLPLANCODE, POLPLANNAME, OLDAMNT, SUPERADDAMNT, trim(SCHEDULEDFLAG)
+		SCHEDULEDFLAG,
+		INVESTRULECODE, UINTLINKVALIFLAG from lcpol a where a.contno= rpad(#contno#,20)
+
+	</select>
+
+	<select id="queryPrecalculatedParam" parameterClass="java.util.Map"
+		resultMap="PolicyCashValueReqDTOResultMap">
+		select
+		trim(b.POLNO) POLNO,
+		trim(b.BANKBRANCH) BANKBRANCH,
+		trim(b.BANKNODE) BANKNODE,
+		trim(b.BANKCODE) BANKCODE,
+		trim(b.ISSUEWAY) ISSUEWAY,
+		trim(b.FUNCFLAG)
+		FUNCFLAG
+		from LKTRANSSTATUS B, LCPOL D
+		where B.POLNO = D.CONTNO
+		AND
+		EXISTS
+		(select 1
+		from LCCONT A
+		where A.CONTNO = B.POLNO
+		AND
+		my_add_months(A.customgetpoldate, 15, 'D') <![CDATA[<]]>
+		#edorAppDate#)
+		and D.RISKCODE in
+		<iterate conjunction="," open="(" close=")" property="riskCodes">
+			#riskCodes[]#
+		</iterate>
+		AND B.BANKCODE = '05'
+		AND B.RCODE = '1'
+		AND B.FUNCFLAG = '01'
+		AND
+		D.ENDDATE  <![CDATA[>]]>
+		#edorAppDate#
+		AND NOT EXISTS (select 1
+		from LPEDORITEM c
+		where c.CONTNO =
+		D.CONTNO
+		AND (c.edortype = 'CT' or c.edortype = 'WT'))
+		AND not exists (select 1
+		from ycpolicycashvalue e
+		where e.contno = trim(b.polno)
+		and e.apply_date
+		= #edorAppDate#
+		AND (e.edortype = 'CT' or e.edortype = 'WT') AND IS_DELETED='0')
+
+	</select>
+
+
+
+	<!-- 调核心试算 -->
+	<select id="queryCallCorePrecalculatedParam" parameterClass="java.util.Map"
+		resultMap="PolicyCashValueReqDTOResultMap">
+		
+		  select trim(b.POLNO) POLNO,
+         trim(b.BANKBRANCH) BANKBRANCH,
+         trim(b.BANKNODE) BANKNODE,
+         trim(b.BANKCODE) BANKCODE,
+         trim(b.ISSUEWAY) ISSUEWAY,
+         trim(b.FUNCFLAG) FUNCFLAG
+    from LKTRANSSTATUS B, LCPOL D
+   where B.POLNO = D.CONTNO
+     and EXISTS (select 1
+            from LCCONT A
+           where A.CONTNO = B.POLNO
+             and my_add_months(A.customgetpoldate, 15, 'D') <![CDATA[<]]> #edorAppDate#)
+     <!-- modify:sunjf 20190604 退保预计算sql优化，支持银行配置-->
+     and EXISTS(select 1
+          from Ldcode1 L
+          where B.Bankcode = L.Code and L.CODETYPE = 'surrenderprecalculate'
+     )
+     <!-- end -->
+     and B.RCODE = '1'
+     and B.FUNCFLAG = '01'
+     and D.ENDDATE <![CDATA[>]]> #edorAppDate#
+     and NOT EXISTS
+   (select 1 from lpedorapp c where c.otherno = D.CONTNO)
+     AND NOT EXISTS (SELECT 1
+            FROM yksurrendertrace y
+           WHERE y.contno = rpad(b.polno,20)
+             and y.functionflag = '26'
+             and y.transdate = #edorAppDate#
+             and y.is_deleted = '0')
+    and exists
+   (select 1
+            from LDCODE1 C
+           where c.code = rpad(D.RISKCODE,20)
+             and c.codetype = 'BestHoldingPeriod'
+             and my_add_months(D.CVALIDATE, to_number(c.code1), 'Y') = #edorAppDate#
+    )
+
+	</select>
+
+</sqlMap>

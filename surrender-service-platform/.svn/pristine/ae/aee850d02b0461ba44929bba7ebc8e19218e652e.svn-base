@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- 使用Druid连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<!-- 默认配置初始化大小、最小、最大，可调整 -->
+		<property name="initialSize" value="20" />
+		<property name="minIdle" value="20" />
+		<property name="maxActive" value="50" />
+		<!-- 默认配置获取连接等待超时的时间，可调整 -->
+		<property name="maxWait" value="1000" />
+		<property name="validationQuery" value="select 1 from dual" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+	<bean id="namedParameterJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+	<!-- 数据库事务策 -->
+	<bean id="surrenderTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="rollbackOnCommitFailure" value="true" />
+		<property name="globalRollbackOnParticipationFailure"
+			value="true" />
+	</bean>
+
+	<tx:advice id="surrenderTxAdvice"
+		transaction-manager="surrenderTransactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config proxy-target-class="false">
+		<aop:advisor
+			pointcut="execution(* com.sinosoft.surrender..service.*..*(..))"
+			advice-ref="surrenderTxAdvice" />
+	</aop:config>
+
+	<tx:advice id="txSpecAdvice"
+		transaction-manager="surrenderTransactionManager">
+		<tx:attributes>
+			<tx:method name="lock" propagation="REQUIRES_NEW" />
+			<tx:method name="unLock" propagation="REQUIRES_NEW" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:advisor advice-ref="txSpecAdvice"
+			pointcut="execution(* com.sinosoft.surrender.common..lock(..))" />
+		<aop:advisor advice-ref="txSpecAdvice"
+			pointcut="execution(* com.sinosoft.surrender.common..unLock(..))" />
+	</aop:config>
+	<import
+		resource="classpath:/config/surrender/surrenderContext.xml" />
+	<import resource="classpath:/config/db/dbContext.xml" />
+</beans>

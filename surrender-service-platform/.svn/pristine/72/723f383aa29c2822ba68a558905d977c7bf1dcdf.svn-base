@@ -1,0 +1,15 @@
+env.product.profile = prd
+
+cache.redis.maxIdle=1000
+cache.redis.maxActive=1000
+cache.redis.password=Redis5354
+cache.redis.dbNum=5
+cache.redis.connectAddress=10.32.65.53:26379;10.32.65.54:26379
+
+cache.redis.test.sentinel.01=10.56.81.121:26379
+cache.redis.test.sentinel.02=10.56.81.121:26479
+
+cache.redis.sentinel.01=10.32.65.53:26379
+cache.redis.sentinel.02=10.32.65.54:26379
+
+env.ybtCoreAddress=http\://10.32.68.158\:7001/TranInterfaceServlet

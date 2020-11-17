@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.sinosoft.lis:lis-endorsement-webservice:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sinosoft/lis/lis-endorsement-webservice/0.0.1-SNAPSHOT/lis-endorsement-webservice-0.0.1-20201112.021657-16.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sinosoft/lis/lis-endorsement-webservice/0.0.1-SNAPSHOT/lis-endorsement-webservice-0.0.1-20201112.021657-16-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sinosoft/lis/lis-endorsement-webservice/0.0.1-SNAPSHOT/lis-endorsement-webservice-0.0.1-20201112.021657-16-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

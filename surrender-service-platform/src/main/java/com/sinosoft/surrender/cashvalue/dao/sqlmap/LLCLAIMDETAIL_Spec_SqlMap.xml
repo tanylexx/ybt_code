@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//Apache Software Foundation//DTD Apache SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LLCLAIMDETAILSPECDAO">
+	<select id="getSumRealPay" parameterClass="java.util.Map"
+		resultClass="java.lang.String">
+		select nvl(sum(a.realpay), 0)
+		from llclaimdetail a, llclaim b
+		where a.clmno = b.clmno
+		and b.clmstate in ('2', '3')  <!-- 2:已核赔，3：已给付 -->
+		and a.getdutycode in
+		(select getdutycode from lmdutygetrela where dutycode =rpad(#dutycode#, 10))
+		and a.contno = rpad(#contno#, 20)
+		and a.polno = rpad(#polno#, 20)
+	</select>
+
+</sqlMap>

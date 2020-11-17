@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.guohualife.common.util:gh-util-rpc:1.0.5-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/guohualife/common/util/gh-util-rpc/1.0.5-SNAPSHOT/gh-util-rpc-1.0.5-20181218.111612-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/guohualife/common/util/gh-util-rpc/1.0.5-SNAPSHOT/gh-util-rpc-1.0.5-20181218.111612-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/guohualife/common/util/gh-util-rpc/1.0.5-SNAPSHOT/gh-util-rpc-1.0.5-20181218.111612-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

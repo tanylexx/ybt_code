@@ -1,0 +1,18 @@
+env.product.profile = stg
+#
+zk.client.serverAddress=10.32.76.136:2181,10.32.76.138:2181,10.32.76.139:2181
+
+env.cache.redis.connectAddress=10.56.81.121:26379;10.56.81.121:26479
+
+env.cache.redis.maxIdle=1000
+env.cache.redis.maxActive=1000
+
+env.cache.redis.test.sentinel.01=10.56.81.121:26379
+env.cache.redis.test.sentinel.02=10.56.81.121:26479
+
+env.cache.redis.sentinel.01=10.56.81.121:26379
+env.cache.redis.sentinel.02=10.56.81.121:26479
+
+env.ybtCoreAddress=http\://10.56.80.174\:7009/TranInterfaceServlet
+
+env.core.jndi.url = t3\://localhost\:8001

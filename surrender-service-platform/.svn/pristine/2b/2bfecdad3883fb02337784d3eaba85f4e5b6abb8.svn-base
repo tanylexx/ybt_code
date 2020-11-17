@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+<bean id="SpringContext"
+		class="com.guohualife.platform.common.api.context.SpringContext" />
+	<!-- properties配置文件 -->
+	<bean id="vehiclePropertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath*:/config/config.properties</value>
+				<value>classpath*:/config/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 自动扫描service、bo、dao -->
+	<context:component-scan base-package="com.sinosoft.surrender" />
+
+	<!-- 加载redis等緩存 -->
+	<import resource="classpath:spring/spring-cache.xml" />
+	<!-- 加载配置中心 -->
+	<import resource="classpath:spring/spring-zk.xml" />
+	<!-- webservice服务 -->
+	<import resource="classpath:spring/spring-cxf.xml" />
+	<!-- 引入项目配置文件 -->
+	<bean class="com.sinosoft.surrender.common.util.ConfigInfo">
+		<property name="locations">
+			<list>
+				<value>classpath:config/config.properties</value>
+				<value>classpath:config/jdbc.properties</value>
+				<value>classpath:config/serverConfig.properties</value>
+			</list>
+		</property>
+	</bean>
+<!-- 	<import resource="classpath:/config/savemsg/saveMsgContext.xml" />
+ -->	<!-- 批处理 -->
+	<import resource="classpath:/config/quartz/quartzServiceContext.xml" />
+	<!-- 数据库 -->
+	 <import resource="classpath:spring/spring-data.xml" /> 
+	<!-- <import resource="classpath:spring/spring-jndi.xml" /> -->
+	<import resource="classpath:/config/surrender/surrenderContext.xml" />
+	<!--mq-->
+	<import resource="classpath:spring/mqContext.xml" />
+	<import resource="classpath:/config/rpc/rpcContext.xml" />
+	<!-- 引用 lis保全工程的webservice客户端配置文件 -->
+	<import resource="classpath:/config/endorsement/webservicesClient.xml" />
+</beans>  

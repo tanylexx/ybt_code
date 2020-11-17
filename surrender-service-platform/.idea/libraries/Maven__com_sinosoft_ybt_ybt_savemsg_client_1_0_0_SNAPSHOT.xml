@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.sinosoft.ybt:ybt-savemsg-client:1.0.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sinosoft/ybt/ybt-savemsg-client/1.0.0-SNAPSHOT/ybt-savemsg-client-1.0.0-20200314.122659-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sinosoft/ybt/ybt-savemsg-client/1.0.0-SNAPSHOT/ybt-savemsg-client-1.0.0-20200314.122659-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sinosoft/ybt/ybt-savemsg-client/1.0.0-SNAPSHOT/ybt-savemsg-client-1.0.0-20200314.122659-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

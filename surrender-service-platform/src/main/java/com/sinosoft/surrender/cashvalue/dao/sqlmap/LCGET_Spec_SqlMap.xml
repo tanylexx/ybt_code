@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="LCGETSPECDAO">
+
+
+
+	<resultMap id="paramMap" class="java.util.HashMap">
+		<result column="polno" property="polno" jdbcType="CHAR" />
+		<result column="datestart" property="datestart" javaType="java.util.Date" />
+		<result column="dateend" property="dateend" javaType="java.util.Date" />
+	</resultMap>
+
+
+
+
+	<select id="getLcGetInfos" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LcGet">
+
+		select trim(DUTYCODE) DUTYCODE, trim(GETDUTYCODE) GETDUTYCODE, trim(POLNO) POLNO,
+      trim(GRPCONTNO) GRPCONTNO, trim(CONTNO) CONTNO, trim(GETDUTYKIND) GETDUTYKIND, trim(INSUREDNO)
+      INSUREDNO, trim(GETMODE) GETMODE, GETLIMIT, GETRATE, trim(URGEGETFLAG) URGEGETFLAG,
+      trim(LIVEGETTYPE) LIVEGETTYPE, ADDRATE, trim(CANGET) CANGET, trim(NEEDACC) NEEDACC,
+      trim(NEEDCANCELACC) NEEDCANCELACC, STANDMONEY, ACTUGET, SUMMONEY, GETINTV, GETTODATE,
+      GETSTARTDATE, GETENDDATE, BALADATE, trim(STATE) STATE, trim(MANAGECOM) MANAGECOM, OPERATOR,
+      MAKEDATE, trim(MAKETIME) MAKETIME, trim(MODIFYTIME) MODIFYTIME, MODIFYDATE, trim(AFTERDIE)
+      AFTERDIE
+       from lcget a where 1=1
+		and a.polno = rpad(#polno#,20)
+		<isNotNull prepend="and" property="datestart">
+			a.gettodate <![CDATA[>=]]>
+			#datestart#
+		</isNotNull>
+		<isNotNull prepend="and" property="dateend">
+			a.gettodate <![CDATA[<= ]]>
+			#dateend#
+		</isNotNull>
+
+		and (a.getenddate  <![CDATA[ >= ]]>#dateend#
+		or a.getenddate = a.gettodate )
+		and a.livegettype ='0' and
+		a.urgegetflag = 'Y'
+
+	</select>
+
+
+
+</sqlMap>

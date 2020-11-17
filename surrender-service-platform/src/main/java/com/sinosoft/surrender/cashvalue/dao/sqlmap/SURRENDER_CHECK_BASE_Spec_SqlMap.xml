@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//Apache Software Foundation//DTD Apache SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SURRENDERCHECKBASESPECDAO">
+
+	<!-- 根据保全批改状态、申请号码类型、试算保全标志、保单号查询保全受理号 -->
+	<select id="getEdorAcceptNo" parameterClass="java.util.Map"
+		resultClass="java.lang.String">
+    select e.edorname
+    from lpedorapp a,lpedoritem c ,lmedoritem e
+    where a.otherno =
+    rpad(#contno#,20)
+    and a.edorstate <![CDATA[ <>  ]]>
+    #edorState#
+    and nvl(a.tryflag, '0') <![CDATA[ <>  ]]>
+    #tryFlag#
+    and a.edoracceptno = c.edoracceptno
+    and c.edortype = e.edorcode
+    and e.appobj = 'I'
+    union all
+    select e.edorname
+    from lpedorapp b,lpedoritem c ,lmedoritem e
+    where
+    b.othernotype = rpad(#otherNoType#,2)
+    and b.edorstate <![CDATA[ <>  ]]>
+    #edorState#
+    and nvl(b.tryflag, '0') <![CDATA[ <>  ]]>
+    #tryFlag#
+    and b.otherno =
+    (select c.appntno from lccont c where c.contno
+    = rpad(#contno#,20))
+    and b.edoracceptno = c.edoracceptno
+    and c.edortype = e.edorcode
+    and e.appobj = 'I'
+	</select>
+
+	<!-- 根据流水号编码和机构编码获取最大流水号 -->
+	<select id="getMaxNo" parameterClass="java.util.Map"
+		resultClass="java.lang.Integer">
+		select createmaxno(#edorNo#, #limitType#) from dual
+	</select>
+
+	<!-- 根据案件状态和保单号获取处在理赔状态中的该保单记录数 -->
+	<select id="getClaimCount" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select count(1)
+		from llcase c
+		where exists (
+		select 1
+		from lccont p
+		where c.customerno = p.insuredno
+		and p.contno = rpad(#contno#,20))
+		and c.rgtstate not in
+		<iterate conjunction="," open="(" close=")" property="rgtStateList">
+			#rgtStateList[]#
+		</iterate>
+	</select>
+
+	<!-- 根据保单号和还清借款标志获取未还清借款个数 -->
+	<select id="getLoloanCount" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select count(1)
+		from loloan a
+		where exists (
+		select 1
+		from
+		lcpol b
+		where a.polno = b.polno
+		and b.contno = rpad(#contno#,20))
+		and
+		a.payoffflag = #payOffFlag#
+	</select>
+	
+	<select id="getLdsystraceInfo" parameterClass="com.sinosoft.surrender.db.model.LdSysTrace"
+		resultClass="com.sinosoft.surrender.db.model.LdSysTrace">
+
+		select *
+		from ldsystrace a
+		where a.polno = rpad(#polno#, 20)
+		and a.polstate = rpad(#polstate#, 10)
+		and a.enddate is null
+		and
+		a.valiflag = #valiflag#
+
+	</select>
+
+
+	<select id="getLpFreezeInfo" parameterClass="com.sinosoft.surrender.db.model.LpFreeze"
+		resultClass="com.sinosoft.surrender.db.model.LpFreeze">
+
+		select *
+		from lpfreeze a
+		where a.contno = rpad(#contno#,
+		20)
+		and a.freezestate = #freezestate#
+	</select>
+
+
+	<select id="getLdCodeInfo" parameterClass="com.sinosoft.surrender.db.model.LdCode"
+		resultClass="com.sinosoft.surrender.db.model.LdCode">
+		select *
+		from ldcode a
+		where a.codetype = rpad(#codetype#,
+		20)
+		and a.code =rpad(#code#, 20)
+	</select>
+
+
+
+	<select id="getLpedoritemInfo" parameterClass="java.util.Map"
+		resultClass="com.sinosoft.surrender.db.model.LpEdorItem">
+		select * from lpedoritem a where a.contno = rpad(#contno#,
+		20) and
+		(a.edortype = rpad(#contloss#, 2) or a.edortype =
+		rpad(#contmove#, 2))
+	</select>
+
+
+
+
+	<!-- 根据保单号和事故者状况获取保单死亡报案个数 -->
+	<select id="getReportCount" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select count(1)
+		from llsubreport st,llreportrela rs,llsubreportpolicy
+		sp
+		where rs.subrptno=st.subrptno
+		and rs.subrptno=sp.subrptno
+		and exists(
+		select 1
+		from llreport rp
+		where (rp.rgtreason is null or rp.rgtreason <![CDATA[ <>  ]]>
+		#rgtReason#)
+		and rp.rptno=rs.rptno
+		)
+		and st.custsituation =
+		rpad(#custsituation#, 2)
+		and exists (
+		select 1
+		from lccont
+		where
+		sp.insuredno =
+		insuredno
+		and contno= rpad(#contno#, 20))
+	</select>
+
+
+
+	<select id="getBankOnTheWay" parameterClass="java.lang.String"
+		resultClass="com.sinosoft.surrender.db.model.LjsPay">
+		select * from ljspay a where a.otherno = rpad(#contNo#,
+		20) and a.othernotype in ('0','2') and a.bankonthewayflag = '1'
+	</select>
+
+
+
+	<select id="getLySendTobankCount" parameterClass="java.lang.String"
+		resultClass="java.math.BigDecimal">
+		select count(1)
+		from lysendtobank a
+		where a.polno =
+		rpad(#contNo#, 20)
+	</select>
+
+	<select id="getCountOfEdorZT1ByRiskCode" parameterClass="java.lang.String"
+		resultClass="java.math.BigDecimal">
+		select count(*)
+		from LMEDORZT1 A
+		WHERE A.LIVEGETTYPE='0'
+		AND
+		A.RISKCODE = #riskCode#
+	</select>
+
+	<select id="getMaxStartDate" parameterClass="java.lang.String"
+		resultClass="java.lang.String">
+		select to_char(max(startdate),'yyyy-MM-dd')
+		from ldsystrace
+		where substr(polstate, 1, 2) = '02'
+		and enddate is null
+		and polno =
+		rpad(#polno#,20)
+	</select>
+
+	<select id="getAliveFlag" parameterClass="java.util.Map"
+		resultClass="java.lang.Integer">
+		select 1
+		from lcget a, lcpol b, lmedorzt1 d
+		where a.polno = b.polno
+		and
+		b.riskcode = d.riskcode
+		and exists
+		(select 1
+		from lmdutygetalive
+		where
+		getdutycode = a.getdutycode
+		and getalivekind = '0')
+		and
+		(((((d.livegettype is null and nvl(d.livegettype, '1') = '1') or
+		b.paytodate = b.payenddate) and a.gettodate <![CDATA[ <=  ]]>
+		#tBaladate#) or
+		(d.livegettype is not null and d.livegettype = '0' and
+		b.paytodate <![CDATA[ <  ]]>
+		b.payenddate and
+		a.gettodate <![CDATA[ <=  ]]>
+		my_add_months(b.paytodate, -1, 'Y'))))
+		and (a.gettodate <![CDATA[ <=  ]]>
+		b.paytodate or b.paytodate = b.payenddate)
+		and (a.getenddate <![CDATA[ >=  ]]>
+		#tBaladate# or getenddate = gettodate)
+		and a.contno = rpad(#contNo#,20)
+		and a.urgegetflag = 'Y'
+	</select>
+
+	<select id="getEdorName" parameterClass="java.lang.String"
+		resultClass="java.lang.String">
+		select edorname
+		from lmedoritem a
+		where a.edorcode =
+		#edorType#
+		and a.appobj = 'I'
+	</select>
+
+	<select id="getOtherPEDor" parameterClass="java.util.Map"
+		resultClass="java.math.BigDecimal">
+		select (
+		nvl(( select sum(1)
+		from lktransstatus a
+		where
+		a.polno = rpad(#contNo#,20)
+		and a.funcflag in ('32', '06', '29', '27',
+		'12')
+		and rcode = '1'
+		and transdate = #tansDate#
+		),0) -
+		(nvl(( select
+		sum(1)
+		from lktransstatus b
+		where b.polno = rpad(#contNo#,20)
+		and
+		b.funcflag in ('08', '33', '30', '28', '25')
+		and b.rcode = '1'
+		and
+		transdate = #tansDate#
+		and b.transstatus in ('2', '3')
+		),0))
+		)
+		from dual
+	</select>
+	
+</sqlMap>
